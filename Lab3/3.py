@@ -1,6 +1,5 @@
 import copy
 
-# Базовий клас (Прототип)
 class Shape:
     def __init__(self, x=0, y=0, color="black"):
         self.x = x
@@ -13,8 +12,6 @@ class Shape:
     def draw(self):
         print(f"Drawing shape at ({self.x}, {self.y}) with color {self.color}")
 
-
-# Клас Circle (конкретний прототип)
 class Circle(Shape):
     def __init__(self, x=0, y=0, color="black", radius=1):
         super().__init__(x, y, color)
@@ -26,8 +23,6 @@ class Circle(Shape):
     def draw(self):
         print(f"Drawing Circle at ({self.x}, {self.y}), radius={self.radius}, color={self.color}")
 
-
-# Клас Rectangle (конкретний прототип)
 class Rectangle(Shape):
     def __init__(self, x=0, y=0, color="black", width=1, height=1):
         super().__init__(x, y, color)
@@ -40,8 +35,6 @@ class Rectangle(Shape):
     def draw(self):
         print(f"Drawing Rectangle at ({self.x}, {self.y}), size=({self.width}x{self.height}), color={self.color}")
 
-
-# Демонстрація роботи патерна
 if __name__ == "__main__":
     circle1 = Circle(10, 20, "red", radius=5)
     circle2 = circle1.clone()
