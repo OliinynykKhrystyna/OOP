@@ -1,0 +1,83 @@
+from abc import ABC, abstractmethod
+
+class AttackStrategy(ABC):
+    @abstractmethod
+    def attack(self):
+        pass
+
+class SwordAttack(AttackStrategy):
+    def attack(self):
+        print("[Sword] Swing with a sword!")
+
+class BowAttack(AttackStrategy):
+    def attack(self):
+        print("[Bow] Shoots an arrow!")
+
+class MagicAttack(AttackStrategy):
+    def attack(self):
+        print("[Magic] Casts a fireball!")
+
+class CharacterState(ABC):
+    @abstractmethod
+    def handle(self, character):
+        pass
+
+    @abstractmethod
+    def can_attack(self):
+        pass
+
+class NormalState(CharacterState):
+    def handle(self, character):
+        print("(State: Normal) Ready for action.")
+
+    def can_attack(self):
+        return True
+
+class PoweredUpState(CharacterState):
+    def handle(self, character):
+        print("(State: PoweredUp) Double power mode!")
+
+    def can_attack(self):
+        return True
+
+class StunnedState(CharacterState):
+    def handle(self, character):
+        print("(State: Stunned) Cannot move or attack...")
+
+    def can_attack(self):
+        return False
+
+class GameCharacter:
+    def __init__(self, name):
+        self.name = name
+        self.attack_strategy: AttackStrategy = SwordAttack()
+        self.state: CharacterState = NormalState()
+
+    def set_attack_strategy(self, strategy: AttackStrategy):
+        self.attack_strategy = strategy
+        print(f"{self.name} changed attack strategy to {strategy.__class__.__name__}")
+
+    def set_state(self, state: CharacterState):
+        self.state = state
+        self.state.handle(self)
+
+    def attack(self):
+        print(f"{self.name} attempts to attack...")
+        if self.state.can_attack():
+            self.attack_strategy.attack()
+        else:
+            print("...but is unable to attack.")
+
+if __name__ == "__main__":
+    hero = GameCharacter("Asterix")
+
+    hero.attack()
+    hero.set_attack_strategy(BowAttack())
+    hero.attack()
+
+    hero.set_state(PoweredUpState())
+    hero.set_attack_strategy(MagicAttack())
+    hero.attack()
+
+    hero.set_state(StunnedState())
+    hero.attack()
